@@ -101,7 +101,7 @@ export default function SocialLaunchBuzz() {
 
   return (
     <section className="w-full bg-white py-16 md:py-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Split Container: Left (Instagram) & Right (Timeline Card) */}
         <div className="grid grid-cols-1 md:grid-cols-12 gap-6 lg:gap-16 items-start">
@@ -110,7 +110,7 @@ export default function SocialLaunchBuzz() {
           <div className="md:col-span-7 space-y-8">
             {/* Title Block */}
             <div className="text-left">
-              <h3 className="font-sans font-bold text-3xl sm:text-[40px] text-[#1d1d1f] tracking-tight leading-tight">
+              <h3 className="font-sans font-bold text-3xl sm:text-[40px] lg:text-[44px] text-[#1d1d1f] tracking-tight leading-tight">
                 Live Instagram
               </h3>
               <p className="text-[#515154] text-sm sm:text-base font-sans font-normal mt-1">
@@ -123,7 +123,7 @@ export default function SocialLaunchBuzz() {
               {posts.map((post) => (
                 <div
                   key={post.id}
-                  className="group relative aspect-[3/4] bg-[#f5f5f7] rounded-[16px] overflow-hidden cursor-pointer"
+                  className="group relative aspect-[1/1] bg-[#f5f5f7] rounded-[16px] overflow-hidden cursor-pointer"
                 >
                   <img
                     src={post.imageUrl}
@@ -146,7 +146,7 @@ export default function SocialLaunchBuzz() {
           <div className="md:col-span-5 space-y-8">
             {/* Title Block */}
             <div className="text-left">
-              <h3 className="font-sans font-bold text-3xl sm:text-[40px] text-[#1d1d1f] tracking-tight leading-tight">
+              <h3 className="font-sans font-bold text-3xl sm:text-[40px] lg:text-[44px] text-[#1d1d1f] tracking-tight leading-tight">
                 Launch Buzz
               </h3>
               <p className="text-[#515154] text-sm sm:text-base font-sans font-normal mt-1">

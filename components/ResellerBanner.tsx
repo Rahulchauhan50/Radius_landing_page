@@ -6,9 +6,9 @@
 export default function ResellerBanner() {
   return (
     <section className="w-full bg-[#f5f5f7] py-16 md:py-20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         {/* Section Heading */}
-        <h2 className="font-sans font-bold text-3xl sm:text-4xl text-[#1d1d1f] tracking-tight leading-tight">
+        <h2 className="font-sans font-bold text-3xl sm:text-[40px] lg:text-[44px] text-[#1d1d1f] tracking-tight leading-tight">
           North India’s 1st On-Campus <br />
           Apple Authorized Reseller
         </h2>

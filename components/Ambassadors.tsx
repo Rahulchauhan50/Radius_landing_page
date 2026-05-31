@@ -48,11 +48,11 @@ export default function Ambassadors() {
 
   return (
     <section id="ambassadors" className="w-full bg-[#f5f5f7] py-16 md:py-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Title */}
         <div className="max-w-xl mb-10 sm:mb-12 text-left">
-          <h2 className="font-sans font-bold text-3xl sm:text-[40px] text-[#1d1d1f] tracking-tight leading-tight">
+          <h2 className="font-sans font-bold text-3xl sm:text-[40px] lg:text-[44px] text-[#1d1d1f] tracking-tight leading-tight">
             Radius Ambassadors
           </h2>
           <p className="text-[#515154] text-base sm:text-[17px] font-sans font-normal mt-2">
@@ -61,7 +61,7 @@ export default function Ambassadors() {
         </div>
 
         {/* 2 Category Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-7xl mx-auto items-stretch">
           {categories.map((cat) => (
             <div
               key={cat.id}
@@ -129,7 +129,7 @@ export default function Ambassadors() {
               </button>
 
               <div className="text-center mb-6">
-                <span className="px-2 py-0.5 bg-zinc-100 text-[10px] font-mono leading-none tracking-widest font-extrabold text-zinc-500 rounded uppercase">
+                <span className="px-2 py-0.5 bg-zinc-100 text-[10px] font-sans leading-none tracking-widest font-extrabold text-zinc-500 rounded uppercase">
                   ambassador onboarding
                 </span>
                 <h3 className="font-sans font-bold text-lg text-zinc-900 mt-2">
@@ -150,24 +150,24 @@ export default function Ambassadors() {
               ) : (
                 <form onSubmit={handleRegister} className="space-y-4">
                   <div>
-                    <label className="block text-[10px] font-mono font-bold text-zinc-500 uppercase mb-1">
+                    <label className="block text-[10px] font-sans font-bold text-zinc-500 uppercase mb-1">
                       Social Username / Channel Link
                     </label>
                     <div className="relative">
-                      <span className="absolute left-3 top-2.5 text-zinc-400 text-xs font-mono">@</span>
+                      <span className="absolute left-3 top-2.5 text-zinc-400 text-xs font-sans">@</span>
                       <input
                         required
                         type="text"
                         placeholder="e.g. rahul_creates"
                         value={handle}
                         onChange={(e) => setHandle(e.target.value)}
-                        className="w-full bg-zinc-50 border border-zinc-200 rounded-lg pl-7 pr-3 py-2 text-xs text-zinc-900 focus:outline-hidden focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f] transition-all font-mono"
+                        className="w-full bg-zinc-50 border border-zinc-200 rounded-lg pl-7 pr-3 py-2 text-xs text-zinc-900 focus:outline-hidden focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f] transition-all font-sans"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label className="block text-[10px] font-mono font-bold text-zinc-500 uppercase mb-1">
+                    <label className="block text-[10px] font-sans font-bold text-zinc-500 uppercase mb-1">
                       Content Focus Niche
                     </label>
                     <select

@@ -112,12 +112,12 @@ export default function CountdownBidding() {
 
   return (
     <div id="surprise-bid" className="w-full bg-black text-white py-12 border-t border-zinc-900">
-      <div className="max-w-6xl mx-auto px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top Row: Title, Countdown Timer, and Product Info */}
         <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12">
           {/* Title */}
           <div className="flex-1 text-center lg:text-left">
-            <h2 className="text-white text-2xl sm:text-3xl font-normal tracking-tight font-sans">
+            <h2 className="font-sans font-bold text-3xl sm:text-[40px] lg:text-[44px] text-white tracking-tight leading-tight">
               Grand Opening Countdown
             </h2>
           </div>

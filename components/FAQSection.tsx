@@ -18,7 +18,7 @@ export default function FAQSection() {
 
   return (
     <section id="faqs" className="w-full bg-[#5C060C] text-white py-16 sm:py-20 border-t border-red-950/20">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Title and Intro */}
         <div className="text-center mb-12 sm:mb-16">
@@ -26,7 +26,7 @@ export default function FAQSection() {
             <HelpCircle className="w-3.5 h-3.5 text-rose-300" /> Support Desk
           </span>
           
-          <h2 className="font-display font-black text-3xl sm:text-4xl text-white tracking-tight mt-3">
+          <h2 className="font-sans font-bold text-3xl sm:text-[40px] lg:text-[44px] text-white tracking-tight mt-3 leading-tight">
             Still have <span className="text-rose-300 italic underline decoration-rose-300/40 underline-offset-4">Questions?</span>
           </h2>
           <p className="mt-2 text-red-100/75 font-light text-xs sm:text-sm max-w-md mx-auto">
@@ -62,8 +62,8 @@ export default function FAQSection() {
 
                 {/* Simulated Collapsible Body Panel */}
                 <div
-                  className={`transition-all duration-300 ease-in-out ${
-                    isOpen ? 'max-h-56 border-t border-red-950/40 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
+                  className={`transition-all duration-300 ease-in-out overflow-hidden ${
+                    isOpen ? 'max-h-[300px] border-t border-red-950/40 opacity-100' : 'max-h-0 opacity-0 pointer-events-none'
                   }`}
                 >
                   <div className="p-4.5 sm:p-5 bg-red-950/25">

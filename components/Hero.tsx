@@ -5,8 +5,10 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { useState, useEffect } from 'react';
 import { MACBOOK_MODELS } from '../data';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 // Inline Apple logo SVG component
 function AppleLogo({ className }: { className?: string }) {
@@ -17,107 +19,256 @@ function AppleLogo({ className }: { className?: string }) {
   );
 }
 
+const HERO_SLIDES = [
+  {
+    id: 1,
+    title: 'Offer For Students',
+    bgImage: 'https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=1600&h=900',
+    type: 'pricing_cards'
+  },
+  {
+    id: 2,
+    title: 'Campus Store Launch',
+    subtitle: 'North India’s 1st On-Campus Apple Reseller',
+    bgImage: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=1600&h=900',
+    type: 'store_launch'
+  },
+  {
+    id: 3,
+    title: 'Surprise Bid Live Event',
+    subtitle: 'Bid for MacBook Neo & Win',
+    bgImage: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&q=80&w=1600&h=900',
+    type: 'surprise_bid'
+  }
+];
+
 export default function Hero() {
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  // Auto-play the hero slides
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+    }, 12000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handlePrev = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveSlide((prev) => (prev === 0 ? HERO_SLIDES.length - 1 : prev - 1));
+  };
+
+  const handleNext = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setActiveSlide((prev) => (prev + 1) % HERO_SLIDES.length);
+  };
+
   return (
-    <div id="student-offers" className="relative w-full overflow-hidden bg-black">
-      {/* Background Image — student with MacBook by window */}
-      <div className="absolute inset-0 z-0">
-        <img
-          src="https://images.unsplash.com/photo-1543269865-cbf427effbad?auto=format&fit=crop&q=80&w=1600&h=900"
-          alt="Student using MacBook"
-          className="w-full h-full object-cover object-left"
-          referrerPolicy="no-referrer"
-        />
-        {/* Warm brown-to-black gradient overlay — transparent left, dark right */}
-        {/* <div className="absolute inset-0 bg-gradient-to-r from-black/10 via-black/50 to-black/95" /> */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#1a0e05]/40 to-black" />
-        {/* Bottom fade for cards area */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent" />
-      </div>
+    <div id="student-offers" className="relative w-full overflow-hidden bg-black min-h-[600px] sm:min-h-[700px] md:min-h-[720px] flex flex-col justify-between group">
+      {/* Background Image Carousel */}
+      <AnimatePresence mode="wait">
+        <motion.div
+          key={activeSlide}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.8 }}
+          className="absolute inset-0 z-0"
+        >
+          <img
+            src={HERO_SLIDES[activeSlide].bgImage}
+            alt="Hero Background"
+            className="w-full h-full object-cover object-center"
+            referrerPolicy="no-referrer"
+          />
+          {/* Dark overlays for readability */}
+          <div className="absolute inset-0 bg-gradient-to-r from-black/50 via-[#1a0e05]/30 to-black/70" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black/35" />
+        </motion.div>
+      </AnimatePresence>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-28 pb-10 sm:pb-14 min-h-[520px] sm:min-h-[600px] flex flex-col justify-between">
-        {/* Title — positioned to the right like in the design */}
-        <div className="text-right mb-8 sm:mb-12">
-          <h1 className="font-display font-extrabold text-4xl sm:text-5xl lg:text-[56px] text-white tracking-tight leading-tight">
-            Offer For Students
-          </h1>
-        </div>
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 sm:pt-24 pb-14 min-h-[580px] sm:min-h-[660px] flex flex-col justify-between flex-1 w-full">
+        {/* Active Slide Content */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={activeSlide}
+            initial={{ opacity: 0, y: 15 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -15 }}
+            transition={{ duration: 0.5 }}
+            className="flex-1 flex flex-col justify-between w-full"
+          >
+            {/* Title */}
+            <div className="text-center mt-4 mb-6">
+              <h1 className="font-sans font-bold text-4xl sm:text-5xl lg:text-[56px] text-white tracking-tight leading-tight">
+                {HERO_SLIDES[activeSlide].title}
+              </h1>
+              {HERO_SLIDES[activeSlide].subtitle && (
+                <p className="text-zinc-300 text-sm sm:text-lg mt-2 font-sans font-medium">
+                  {HERO_SLIDES[activeSlide].subtitle}
+                </p>
+              )}
+            </div>
 
-        {/* MacBook Product Cards */}
-        <div className="flex flex-col sm:flex-row items-stretch gap-4 sm:gap-5 justify-center sm:justify-end">
-          {MACBOOK_MODELS.map((model, idx) => {
-            const isNeo = model.modelName === 'MacBook Neo';
-            return (
-              <motion.div
-                key={model.modelName}
-                initial={{ opacity: 0, y: 25 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: idx * 0.12 }}
-                className="relative rounded-xl bg-zinc-900/70 backdrop-blur-md border border-zinc-700/50 p-5 sm:p-6 flex flex-col min-w-[200px] sm:min-w-[220px] max-w-[320px] hover:border-zinc-600/60 transition-all duration-300"
-              >
-                {/* Apple Logo + Model Name */}
-                <div className="flex items-center gap-2 mb-3">
-                  <AppleLogo className="w-4 h-4 sm:w-5 sm:h-5 text-zinc-300" />
-                  <span className="font-display text-lg sm:text-xl text-white italic font-semibold tracking-tight">
-                    {model.modelName}
-                  </span>
-                </div>
+            {/* Slide Body Content */}
+            <div className="flex-1 flex items-center justify-center w-full">
+              {HERO_SLIDES[activeSlide].type === 'pricing_cards' ? (
+                /* Slide 1 Content: MacBook Pricing Cards (mockup design, centered) */
+                <div className="flex flex-col md:flex-row items-stretch gap-6 justify-center w-full max-w-6xl mx-auto">
+                  {MACBOOK_MODELS.map((model) => {
+                    return (
+                      <div
+                        key={model.modelName}
+                        className={`rounded-[24px] bg-black/30 backdrop-blur-md border border-white/20 p-6 sm:p-7 flex flex-col justify-between shadow-xl transition-all duration-300 hover:border-white/35 ${
+                          model.modelName === 'MacBook Neo' 
+                            ? 'min-w-[280px] md:min-w-[420px] flex-[1.6]' 
+                            : 'min-w-[220px] md:min-w-[260px] flex-1'
+                        }`}
+                      >
+                        <div>
+                          {/* Logo + Model Name */}
+                          <div className="flex items-center gap-2 mb-3">
+                            <AppleLogo className="w-4 h-4 sm:w-5 sm:h-5 text-white" />
+                            <span className="font-sans text-lg sm:text-xl text-white italic font-bold tracking-tight">
+                              {model.modelName}
+                            </span>
+                          </div>
 
-                {/* Green savings badge */}
-                <div className="mb-4">
-                  <span className="inline-block px-2.5 py-1 rounded bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 text-[10px] sm:text-[11px] font-bold tracking-wide">
-                    {model.badgeText}
-                  </span>
-                </div>
+                          {/* Green savings badge (bright lime green with black text) */}
+                          <div className="mb-4">
+                            <span className="inline-block px-3 py-0.5 rounded-full bg-[#E5F97E] text-black text-[10px] sm:text-[11px] font-sans font-bold tracking-wide">
+                              {model.badgeText}
+                            </span>
+                          </div>
 
-                {/* Pricing */}
-                {model.hasDuoPrice && model.duoSpecs ? (
-                  /* MacBook Neo — dual pricing side by side */
-                  <div className="flex gap-4 sm:gap-6">
-                    {model.duoSpecs.map((sub) => (
-                      <div key={sub.specs} className="flex flex-col">
-                        <span className="text-[10px] sm:text-[11px] text-zinc-400 font-mono">
-                          MRP{' '}
-                          <span className="line-through decoration-red-500/70 decoration-1">
-                            ₹{sub.mrp.toLocaleString('en-IN')}
-                          </span>
-                        </span>
-                        <span className="text-xl sm:text-2xl font-display font-extrabold text-white tracking-tight mt-0.5">
-                          ₹{sub.promoPrice.toLocaleString('en-IN')}*
-                        </span>
-                        <span className="text-[10px] text-zinc-500 font-mono mt-1">
-                          {sub.specs}
-                        </span>
+                          {/* Pricing */}
+                          {model.hasDuoPrice && model.duoSpecs ? (
+                            <div className="flex gap-6 justify-between mt-4">
+                              {model.duoSpecs.map((sub, sIdx) => (
+                                <div key={sub.specs} className={`flex flex-col flex-1 ${sIdx > 0 ? 'border-l border-white/10 pl-6' : ''}`}>
+                                  <span className="text-[10px] sm:text-[11px] text-zinc-400 font-sans font-medium">
+                                    MRP{' '}
+                                    <span className="line-through decoration-[#D22630] decoration-1 font-semibold">
+                                      ₹{sub.mrp.toLocaleString('en-IN')}
+                                    </span>
+                                  </span>
+                                  <span className="text-xl sm:text-2xl lg:text-[26px] font-sans font-extrabold text-white tracking-tight mt-1">
+                                    ₹{sub.promoPrice.toLocaleString('en-IN')}*
+                                  </span>
+                                  <span className="text-[10px] text-zinc-400 font-sans mt-1.5 font-medium">
+                                    {sub.specs}
+                                  </span>
+                                </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <div className="flex flex-col mt-4">
+                              <span className="text-[10px] sm:text-[11px] text-zinc-400 font-sans font-medium">
+                                MRP{' '}
+                                <span className="line-through decoration-[#D22630] decoration-1 font-semibold">
+                                  ₹{model.mrp?.toLocaleString('en-IN')}
+                                </span>
+                              </span>
+                              <span className="text-2xl sm:text-3xl lg:text-[34px] font-sans font-extrabold text-white tracking-tight mt-1">
+                                ₹{model.promoPrice?.toLocaleString('en-IN')}*
+                              </span>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    ))}
+                    );
+                  })}
+                </div>
+              ) : HERO_SLIDES[activeSlide].type === 'store_launch' ? (
+                /* Slide 2 Content: Campus Store Launch Features */
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-center w-full max-w-5xl mx-auto">
+                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                    <h3 className="font-sans font-bold text-lg sm:text-xl text-white">2,000 sq ft Store</h3>
+                    <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
+                      Explore and experience the complete Apple product lineup inside our premium campus center layout.
+                    </p>
                   </div>
-                ) : (
-                  /* MacBook Air / Pro — single pricing */
-                  <div className="flex flex-col">
-                    <span className="text-[10px] sm:text-[11px] text-zinc-400 font-mono">
-                      MRP{' '}
-                      <span className="line-through decoration-red-500/70 decoration-1">
-                        ₹{model.mrp.toLocaleString('en-IN')}
-                      </span>
-                    </span>
-                    <span className="text-2xl sm:text-3xl font-display font-extrabold text-white tracking-tight mt-0.5">
-                      ₹{model.promoPrice.toLocaleString('en-IN')}*
-                    </span>
+                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                    <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Dedicated Training Lab</h3>
+                    <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
+                      Attend complimentary interactive iOS development bootcamps and Swift masterclasses led by specialists.
+                    </p>
                   </div>
-                )}
-              </motion.div>
-            );
-          })}
-        </div>
+                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                    <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Exclusive Academic Savings</h3>
+                    <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
+                      Save up to ₹24,000 on MacBook configurations alongside no-cost monthly financing options.
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                /* Slide 3 Content: Surprise Bid live auction countdown info */
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-center w-full max-w-5xl mx-auto">
+                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                    <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Register Your Bid</h3>
+                    <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
+                      Submit your own preferred price for the MacBook Neo in our live auction interface before the countdown ends.
+                    </p>
+                  </div>
+                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                    <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Grand Opening Draw</h3>
+                    <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
+                      Unique matching bids will take home their custom-configured devices during the live on-campus event draw.
+                    </p>
+                  </div>
+                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                    <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Ambassador Bonuses</h3>
+                    <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
+                      Earn store credits and unlock campus internship profiles by referring peers to the experience portal.
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
 
-        {/* Terms footnote — bottom right */}
-        <div className="flex justify-end mt-6">
-          <span className="text-[10px] sm:text-[11px] text-zinc-500 font-mono flex items-center gap-1">
-            <span className="w-1 h-1 rounded-full bg-zinc-500" />
+        {/* Footer Row (Term & Condition + Dots Navigation) */}
+        <div className="flex items-center justify-between w-full mt-10 z-10">
+          {/* Pagination Indicators */}
+          <div className="flex items-center space-x-2">
+            {HERO_SLIDES.map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setActiveSlide(idx)}
+                className={`transition-all duration-350 cursor-pointer ${
+                  activeSlide === idx 
+                    ? 'w-6 bg-white h-1.5 rounded-full' 
+                    : 'w-1.5 bg-white/40 hover:bg-white/60 h-1.5 rounded-full'
+                }`}
+                aria-label={`Select Hero slide ${idx + 1}`}
+              />
+            ))}
+          </div>
+
+          {/* Terms footnote — bottom right */}
+          <div className="flex items-center gap-1.5 text-[10px] sm:text-[11px] text-zinc-400 font-sans">
+            <span className="w-1.5 h-1.5 rounded-full bg-zinc-400" />
             Term &amp; Condition
-          </span>
+          </div>
         </div>
       </div>
+
+      {/* Prev/Next Navigation Overlay Arrows (Fade in on Hover) */}
+      <button
+        onClick={handlePrev}
+        className="absolute left-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/30 backdrop-blur-xs text-white opacity-0 group-hover:opacity-100 hover:bg-black/55 transition-all cursor-pointer z-20 pointer-events-auto"
+        aria-label="Previous slide"
+      >
+        <ChevronLeft className="w-5 h-5" />
+      </button>
+      <button
+        onClick={handleNext}
+        className="absolute right-4 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/30 backdrop-blur-xs text-white opacity-0 group-hover:opacity-100 hover:bg-black/55 transition-all cursor-pointer z-20 pointer-events-auto"
+        aria-label="Next slide"
+      >
+        <ChevronRight className="w-5 h-5" />
+      </button>
     </div>
   );
 }

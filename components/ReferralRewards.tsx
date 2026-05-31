@@ -139,18 +139,18 @@ export default function ReferralRewards() {
 
   return (
     <section id="gamified-incentives" className="w-full bg-white py-16 md:py-20">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {/* Title & Introduction */}
         <div className="text-center max-w-3xl mx-auto mb-12 sm:mb-16">
-          <h2 className="font-sans font-bold text-3xl sm:text-[40px] text-[#1d1d1f] tracking-tight leading-[1.15]">
+          <h2 className="font-sans font-bold text-3xl sm:text-[40px] lg:text-[44px] text-[#1d1d1f] tracking-tight leading-[1.15]">
             Refer a friend. Earn a badge. <br />
             Get store credit
           </h2>
         </div>
 
         {/* 5 Progression Steps */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-10 gap-x-4 max-w-5xl mx-auto mb-12">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-y-10 gap-x-4 max-w-7xl mx-auto mb-12">
           {steps.map((step) => (
             <div key={step.index} className="flex flex-col items-center text-center px-1">
               <div className="mb-3 flex items-center justify-center h-10 w-10">
@@ -172,7 +172,7 @@ export default function ReferralRewards() {
         <div className="w-full h-[1px] bg-zinc-200/80 mb-12" />
 
         {/* Referral Tiers Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-5xl mx-auto mb-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 max-w-7xl mx-auto mb-10">
           {REFERRAL_TIERS.map((tier) => {
             const isActive = selectedTier === tier.id;
             return (
@@ -227,14 +227,14 @@ export default function ReferralRewards() {
                 </div>
                 <div>
                   <h3 className="font-sans font-bold text-lg text-zinc-900">Campus Invitation Portal</h3>
-                  <p className="text-[10px] font-mono text-zinc-400">Generate Your Trackable Invite Link</p>
+                  <p className="text-[10px] font-sans font-medium text-zinc-400">Generate Your Trackable Invite Link</p>
                 </div>
               </div>
 
               {!generatedLink ? (
                 <form onSubmit={handleGenerateLink} className="space-y-4">
                   <div>
-                    <label className="block text-[10px] font-mono font-bold text-zinc-500 uppercase mb-1">Your Full Name</label>
+                    <label className="block text-[10px] font-sans font-bold text-zinc-500 uppercase mb-1">Your Full Name</label>
                     <input
                       required
                       type="text"
@@ -245,7 +245,7 @@ export default function ReferralRewards() {
                     />
                   </div>
                   <div>
-                    <label className="block text-[10px] font-mono font-bold text-zinc-500 uppercase mb-1">Chitkara Roll Number</label>
+                    <label className="block text-[10px] font-sans font-bold text-zinc-500 uppercase mb-1">Chitkara Roll Number</label>
                     <input
                       required
                       type="text"
@@ -266,7 +266,7 @@ export default function ReferralRewards() {
               ) : (
                 <div className="space-y-4">
                   <div className="p-3 bg-zinc-50 rounded-lg border border-zinc-200">
-                    <span className="text-[9px] font-mono font-bold text-zinc-400 uppercase tracking-widest block mb-1">Your Custom Referral Invite Url</span>
+                    <span className="text-[9px] font-sans font-bold text-zinc-400 uppercase tracking-widest block mb-1">Your Custom Referral Invite Url</span>
                     <div className="flex items-center justify-between gap-2">
                       <span className="text-xs font-mono text-zinc-700 truncate select-all">{generatedLink}</span>
                       <button
