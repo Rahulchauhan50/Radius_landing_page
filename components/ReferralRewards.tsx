@@ -20,16 +20,16 @@ import LeaderboardIcon from '../assets/icons/leaderboard.svg';
 function ReferralTierIcons({ tierId }: { tierId: number }) {
   const personIcon = (key: number) => (
     <svg width="32" height="33" viewBox="0 0 32 33" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <path d="M16.001 12.772C19.2517 12.772 21.8869 10.1367 21.8869 6.88599C21.8869 3.63525 19.2517 1 16.001 1C12.7502 1 10.115 3.63525 10.115 6.88599C10.115 10.1367 12.7502 12.772 16.001 12.772Z" stroke="url(#paint0_linear_372_393)" stroke-width="2" />
-      <path d="M16.001 16.5308C8.31324 16.5308 1.96667 21.9272 1.01647 28.9091C0.87788 29.9277 1.68712 30.7862 2.71234 30.8612L7.05976 31.1794C13.0126 31.6154 18.9894 31.6154 24.9422 31.1794L29.2896 30.8612C30.3148 30.7862 31.124 29.9277 30.9855 28.9091C30.0353 21.9272 23.6887 16.5308 16.001 16.5308Z" stroke="url(#paint1_linear_372_393)" stroke-width="2" stroke-linecap="round" />
+      <path d="M16.001 12.772C19.2517 12.772 21.8869 10.1367 21.8869 6.88599C21.8869 3.63525 19.2517 1 16.001 1C12.7502 1 10.115 3.63525 10.115 6.88599C10.115 10.1367 12.7502 12.772 16.001 12.772Z" stroke="url(#paint0_linear_372_393)" strokeWidth="2" />
+      <path d="M16.001 16.5308C8.31324 16.5308 1.96667 21.9272 1.01647 28.9091C0.87788 29.9277 1.68712 30.7862 2.71234 30.8612L7.05976 31.1794C13.0126 31.6154 18.9894 31.6154 24.9422 31.1794L29.2896 30.8612C30.3148 30.7862 31.124 29.9277 30.9855 28.9091C30.0353 21.9272 23.6887 16.5308 16.001 16.5308Z" stroke="url(#paint1_linear_372_393)" strokeWidth="2" strokeLinecap="round" />
       <defs>
         <linearGradient id="paint0_linear_372_393" x1="16.001" y1="1" x2="16.001" y2="12.772" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#D558F9" />
-          <stop offset="1" stop-color="#7F8EE7" />
+          <stop stopColor="#D558F9" />
+          <stop offset="1" stopColor="#7F8EE7" />
         </linearGradient>
         <linearGradient id="paint1_linear_372_393" x1="16.001" y1="16.5308" x2="16.001" y2="31.5064" gradientUnits="userSpaceOnUse">
-          <stop stop-color="#D558F9" />
-          <stop offset="1" stop-color="#7F8EE7" />
+          <stop stopColor="#D558F9" />
+          <stop offset="1" stopColor="#7F8EE7" />
         </linearGradient>
       </defs>
     </svg>
