@@ -26,6 +26,7 @@ export default function CountdownBidding() {
   });
 
   const [bids, setBids] = useState<BidRecord[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [statusMessage, setStatusMessage] = useState<{
     text: string;
     type: 'success' | 'error' | '';
@@ -69,7 +70,7 @@ export default function CountdownBidding() {
   }, []);
 
   // Form submit handler
-  const handleBidSubmit = (e: FormEvent) => {
+  const handleBidSubmit = async (e: FormEvent) => {
     e.preventDefault();
     const { name, phone, email, bidAmount } = formData;
 
@@ -84,30 +85,63 @@ export default function CountdownBidding() {
       return;
     }
 
-    const newBid: BidRecord = {
-      id: 'bid_' + Math.random().toString(36).substring(2, 9),
-      name: name.trim(),
-      phone: phone.substring(0, Math.min(phone.length, 3)) + '******' + phone.substring(Math.max(0, phone.length - 4)),
-      email: email.split('@')[0].substring(0, 4) + '***@' + (email.split('@')[1] || 'chitkara.edu'),
-      bidAmount: parsedBid,
-      timestamp: 'Just now',
-      status: 'accepted',
-    };
+    setIsSubmitting(true);
+    setStatusMessage({ text: '', type: '' });
 
-    const updatedBids = [newBid, ...bids];
-    setBids(updatedBids);
-    localStorage.setItem('radius_auction_bids', JSON.stringify(updatedBids));
+    try {
+      const response = await fetch('/api/bid', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: name.trim(),
+          phone: phone.trim(),
+          email: email.trim(),
+          bidAmount: parsedBid,
+        }),
+      });
 
-    setStatusMessage({
-      text: `Congratulations ${name.split(' ')[0]}! Your bid of ₹${parsedBid.toLocaleString('en-IN')} has been logged.`,
-      type: 'success',
-    });
+      const data = await response.json();
 
-    setFormData({ name: '', phone: '', email: '', bidAmount: '' });
+      if (!response.ok) {
+        throw new Error(data.error || 'Failed to submit bid.');
+      }
 
-    setTimeout(() => {
-      setStatusMessage({ text: '', type: '' });
-    }, 5000);
+      const newBid: BidRecord = {
+        id: data.bidId || ('bid_' + Math.random().toString(36).substring(2, 9)),
+        name: name.trim(),
+        phone: phone.substring(0, Math.min(phone.length, 3)) + '******' + phone.substring(Math.max(0, phone.length - 4)),
+        email: email.split('@')[0].substring(0, 4) + '***@' + (email.split('@')[1] || 'chitkara.edu'),
+        bidAmount: parsedBid,
+        timestamp: 'Just now',
+        status: 'accepted',
+      };
+
+      const updatedBids = [newBid, ...bids];
+      setBids(updatedBids);
+      localStorage.setItem('radius_auction_bids', JSON.stringify(updatedBids));
+
+      setStatusMessage({
+        text: `Congratulations ${name.split(' ')[0]}! Your bid of ₹${parsedBid.toLocaleString('en-IN')} has been logged (Bid ID: ${data.bidId}), and confirmation emails have been sent.`,
+        type: 'success',
+      });
+
+      setFormData({ name: '', phone: '', email: '', bidAmount: '' });
+    } catch (error: any) {
+      console.error('Bid submission error:', error);
+      setStatusMessage({
+        text: error?.message || 'Something went wrong. Please check your connection and try again.',
+        type: 'error',
+      });
+    } finally {
+      setIsSubmitting(false);
+      setTimeout(() => {
+        setStatusMessage((prev) => {
+          return prev.type === 'success' ? { text: '', type: '' } : prev;
+        });
+      }, 6000);
+    }
   };
 
   return (
@@ -219,40 +253,55 @@ export default function CountdownBidding() {
             <input
               type="text"
               required
+              disabled={isSubmitting}
               placeholder="Name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="bg-white text-black placeholder-zinc-500 px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D22630] transition-all duration-200"
+              className="bg-white text-black placeholder-zinc-500 px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D22630] transition-all duration-200 disabled:opacity-75 disabled:cursor-not-allowed"
             />
             <input
               type="tel"
               required
+              disabled={isSubmitting}
               placeholder="Phone"
               value={formData.phone}
               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-              className="bg-white text-black placeholder-zinc-500 px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D22630] transition-all duration-200"
+              className="bg-white text-black placeholder-zinc-500 px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D22630] transition-all duration-200 disabled:opacity-75 disabled:cursor-not-allowed"
             />
             <input
               type="email"
               required
+              disabled={isSubmitting}
               placeholder="Email"
               value={formData.email}
               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              className="bg-white text-black placeholder-zinc-500 px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D22630] transition-all duration-200"
+              className="bg-white text-black placeholder-zinc-500 px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D22630] transition-all duration-200 disabled:opacity-75 disabled:cursor-not-allowed"
             />
             <input
               type="number"
               required
+              disabled={isSubmitting}
               placeholder="Your Bid Amount"
               value={formData.bidAmount}
               onChange={(e) => setFormData({ ...formData, bidAmount: e.target.value })}
-              className="bg-white text-black placeholder-zinc-500 px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D22630] transition-all duration-200"
+              className="bg-white text-black placeholder-zinc-500 px-4 py-3 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-[#D22630] transition-all duration-200 disabled:opacity-75 disabled:cursor-not-allowed"
             />
             <button
               type="submit"
-              className="bg-[#D22630] hover:bg-[#b81d24] text-white font-bold text-sm px-6 py-3 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center flex items-center justify-center"
+              disabled={isSubmitting}
+              className="bg-[#D22630] hover:bg-[#b81d24] text-white font-bold text-sm px-6 py-3 rounded-lg transition-all duration-200 hover:scale-[1.02] active:scale-[0.98] cursor-pointer text-center flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed disabled:scale-100"
             >
-              Submit Your Bid
+              {isSubmitting ? (
+                <span className="flex items-center gap-2">
+                  <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                  </svg>
+                  Submitting...
+                </span>
+              ) : (
+                'Submit Your Bid'
+              )}
             </button>
           </form>
 
