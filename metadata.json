@@ -1,0 +1,6 @@
+{
+  "name": "Radius Elevate",
+  "description": "Exclusive landing page and interactive portal for the Radius Elevate store launch at Chitkara University. Register as an Ambassador, place live bids inside the Surprise Bid Auction, track the grand opening countdown, and view exclusive MacBook pricing.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
