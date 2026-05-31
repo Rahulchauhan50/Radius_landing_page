@@ -12,22 +12,25 @@ export default function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
         {/* Radius Elevate Logo */}
         <div className="flex items-center space-x-2">
-          <img src={RadiusLogo.src} alt="Radius Elevate Logo" className="h-10 w-auto object-contain" />
+          <img src={RadiusLogo.src} alt="Radius Elevate Logo" className="h-8 sm:h-10 w-auto object-contain" />
         </div>
 
         {/* Chitkara Campus Store Partnership Logo */}
-        <div className="flex items-center space-x-3.5">
+        <div className="flex items-center space-x-2 sm:space-x-3.5">
           {/* Chitkara Logo */}
-          <img src={ChitkaraLogo.src} alt="Chitkara Logo" className="h-10 w-auto object-contain" />
+          <img src={ChitkaraLogo.src} alt="Chitkara Logo" className="md:h-8 h-4.5 sm:h-5.5 w-auto object-contain" />
           
           {/* Vertical Separator */}
-          <div className="h-5 w-[1px] bg-zinc-200" />
+          <div className="h-4 sm:h-5 w-[1px] bg-zinc-200" />
           
           {/* Partnership Label */}
-          <div className="flex items-center space-x-1.5">
-            <span className="w-1.5 h-1.5 rounded-full animate-pulse"></span>
-            <span className="text-[14px] font-sans font-bold tracking-wider uppercase">
+          <div className="flex items-center space-x-1 sm:space-x-1.5">
+            <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full animate-pulse"></span>
+            <span className="hidden min-[400px]:inline text-[9px] sm:text-[10px] font-sans font-bold tracking-wider uppercase">
               Campus Store<br></br> Launch
+            </span>
+            <span className="inline min-[400px]:hidden text-[9px] font-sans font-bold tracking-wider uppercase">
+              Launch
             </span>
           </div>
         </div>

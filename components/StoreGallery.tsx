@@ -50,7 +50,7 @@ export default function StoreGallery() {
   const activeRenderIndex = activeSlide + 1;
 
   return (
-    <section id="store-gallery" className="w-full bg-[#f5f5f7] py-16 md:py-20 overflow-hidden">
+    <section id="store-gallery" className="w-full bg-[#f5f5f7] py-16 md:py-20  overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Title Block */}
@@ -64,7 +64,7 @@ export default function StoreGallery() {
         </div>
 
         {/* Carousel Viewport Container */}
-        <div className="relative w-full overflow-hidden rounded-[24px] group">
+        <div className="relative w-full md:overflow-visible overflow-hidden rounded-[24px] group">
           {/* Sliding Track */}
           <div 
             className="flex items-center transition-transform duration-500 ease-out py-4"

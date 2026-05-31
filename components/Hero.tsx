@@ -114,15 +114,15 @@ export default function Hero() {
             <div className="flex-1 flex items-center justify-center w-full">
               {HERO_SLIDES[activeSlide].type === 'pricing_cards' ? (
                 /* Slide 1 Content: MacBook Pricing Cards (mockup design, centered) */
-                <div className="flex flex-col md:flex-row items-stretch gap-6 justify-center w-full max-w-6xl mx-auto">
+                <div className="flex flex-row overflow-x-auto pb-4 md:pb-0 scrollbar-none snap-x snap-mandatory gap-6 justify-start md:justify-center w-full max-w-6xl mx-auto px-4 md:px-0">
                   {MACBOOK_MODELS.map((model) => {
                     return (
                       <div
                         key={model.modelName}
-                        className={`rounded-[24px] bg-black/30 backdrop-blur-md border border-white/20 p-6 sm:p-7 flex flex-col justify-between shadow-xl transition-all duration-300 hover:border-white/35 ${
+                        className={`rounded-[24px] bg-black/30 backdrop-blur-md border border-white/20 p-6 sm:p-7 flex flex-col justify-between shadow-xl transition-all duration-300 hover:border-white/35 snap-center shrink-0 w-[85%] sm:w-[60%] md:w-auto ${
                           model.modelName === 'MacBook Neo' 
-                            ? 'min-w-[280px] md:min-w-[420px] flex-[1.6]' 
-                            : 'min-w-[220px] md:min-w-[260px] flex-1'
+                            ? 'min-w-[280px] md:min-w-[420px] md:flex-[1.6]' 
+                            : 'min-w-[220px] md:min-w-[260px] md:flex-1'
                         }`}
                       >
                         <div>
@@ -181,20 +181,20 @@ export default function Hero() {
                 </div>
               ) : HERO_SLIDES[activeSlide].type === 'store_launch' ? (
                 /* Slide 2 Content: Campus Store Launch Features */
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-center w-full max-w-5xl mx-auto">
-                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                <div className="flex flex-row md:grid md:grid-cols-3 overflow-x-auto pb-4 md:pb-0 scrollbar-none snap-x snap-mandatory gap-6 justify-start md:justify-center w-full max-w-5xl mx-auto px-4 md:px-0">
+                  <div className="snap-center shrink-0 w-[85%] sm:w-[60%] md:w-auto rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
                     <h3 className="font-sans font-bold text-lg sm:text-xl text-white">2,000 sq ft Store</h3>
                     <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
                       Explore and experience the complete Apple product lineup inside our premium campus center layout.
                     </p>
                   </div>
-                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                  <div className="snap-center shrink-0 w-[85%] sm:w-[60%] md:w-auto rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
                     <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Dedicated Training Lab</h3>
                     <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
                       Attend complimentary interactive iOS development bootcamps and Swift masterclasses led by specialists.
                     </p>
                   </div>
-                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                  <div className="snap-center shrink-0 w-[85%] sm:w-[60%] md:w-auto rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
                     <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Exclusive Academic Savings</h3>
                     <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
                       Save up to ₹24,000 on MacBook configurations alongside no-cost monthly financing options.
@@ -203,20 +203,20 @@ export default function Hero() {
                 </div>
               ) : (
                 /* Slide 3 Content: Surprise Bid live auction countdown info */
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6 justify-center w-full max-w-5xl mx-auto">
-                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                <div className="flex flex-row md:grid md:grid-cols-3 overflow-x-auto pb-4 md:pb-0 scrollbar-none snap-x snap-mandatory gap-6 justify-start md:justify-center w-full max-w-5xl mx-auto px-4 md:px-0">
+                  <div className="snap-center shrink-0 w-[85%] sm:w-[60%] md:w-auto rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
                     <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Register Your Bid</h3>
                     <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
                       Submit your own preferred price for the MacBook Neo in our live auction interface before the countdown ends.
                     </p>
                   </div>
-                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                  <div className="snap-center shrink-0 w-[85%] sm:w-[60%] md:w-auto rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
                     <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Grand Opening Draw</h3>
                     <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
                       Unique matching bids will take home their custom-configured devices during the live on-campus event draw.
                     </p>
                   </div>
-                  <div className="rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
+                  <div className="snap-center shrink-0 w-[85%] sm:w-[60%] md:w-auto rounded-[24px] bg-black/35 backdrop-blur-md border border-white/20 p-6 sm:p-8 flex flex-col justify-between shadow-xl">
                     <h3 className="font-sans font-bold text-lg sm:text-xl text-white">Ambassador Bonuses</h3>
                     <p className="text-zinc-300 text-xs sm:text-sm font-sans mt-3 leading-relaxed">
                       Earn store credits and unlock campus internship profiles by referring peers to the experience portal.
