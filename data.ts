@@ -4,6 +4,7 @@
  */
 
 import { MacBookSpec, ReferralTier, AmbassadorCategory, InstagramPost, LiveEventSlot, GallerySlide, FAQItem } from './types';
+import slide1 from './assets/bottom_slides/slide1.png'
 
 export const MACBOOK_MODELS: MacBookSpec[] = [
   {
@@ -171,9 +172,9 @@ export const LIVE_EVENT_SLOTS: LiveEventSlot[] = [
 export const GALLERY_SLIDES: GallerySlide[] = [
   {
     id: 1,
-    title: 'Grand Entrance',
-    subtitle: 'Experience Center - Red carpet grand reveal moment of the 2,000 sq ft state-of-the-art layout.',
-    imageUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&q=80&w=1200'
+    title: '',
+    subtitle: '',
+    imageUrl: slide1.src,
   },
   {
     id: 2,

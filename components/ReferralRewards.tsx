@@ -86,6 +86,9 @@ export default function ReferralRewards() {
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submissionId, setSubmissionId] = useState('');
+  const [errorMsg, setErrorMsg] = useState('');
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -93,15 +96,32 @@ export default function ReferralRewards() {
     setEmail('');
     setPhone('');
     setSubmitted(false);
+    setIsSubmitting(false);
+    setErrorMsg('');
+    setSubmissionId('');
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     if (!name || !email || !phone) return;
-    setSubmitted(true);
-    setTimeout(() => {
-      closeModal();
-    }, 3500);
+    setIsSubmitting(true);
+    setErrorMsg('');
+    try {
+      const res = await fetch('/api/register', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), phone: phone.trim(), formType: 'referral' }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Submission failed.');
+      setSubmissionId(data.submissionId || '');
+      setSubmitted(true);
+      setTimeout(() => closeModal(), 4000);
+    } catch (err: any) {
+      setErrorMsg(err?.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const steps = [
@@ -253,8 +273,9 @@ export default function ReferralRewards() {
                       type="text"
                       placeholder="Your full name"
                       value={name}
+                      disabled={isSubmitting}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans disabled:opacity-60"
                     />
                   </div>
 
@@ -268,8 +289,9 @@ export default function ReferralRewards() {
                       type="email"
                       placeholder="you@example.com"
                       value={email}
+                      disabled={isSubmitting}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans disabled:opacity-60"
                     />
                   </div>
 
@@ -283,18 +305,33 @@ export default function ReferralRewards() {
                       type="tel"
                       placeholder="+91 XXXXX XXXXX"
                       value={phone}
+                      disabled={isSubmitting}
                       onChange={(e) => setPhone(e.target.value)}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans"
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans disabled:opacity-60"
                     />
                   </div>
 
+                  {errorMsg && (
+                    <p className="text-[12px] text-rose-500 font-medium">{errorMsg}</p>
+                  )}
+
                   <button
                     type="submit"
-                    className="w-full mt-2 py-3 bg-[#1d1d1f] hover:bg-black text-white font-sans font-semibold text-sm rounded-xl transition-colors cursor-pointer"
+                    disabled={isSubmitting}
+                    className="w-full mt-2 py-3 bg-[#1d1d1f] hover:bg-black text-white font-sans font-semibold text-sm rounded-xl transition-colors cursor-pointer flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
                   >
-                    Submit
+                    {isSubmitting ? (
+                      <>
+                        <svg className="animate-spin h-4 w-4 text-white" fill="none" viewBox="0 0 24 24">
+                          <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                          <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                        </svg>
+                        Submitting...
+                      </>
+                    ) : 'Submit'}
                   </button>
                 </form>
+
               )}
             </div>
           </div>

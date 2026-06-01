@@ -9,13 +9,23 @@ import { useState, useEffect, FormEvent } from 'react';
 import { BidRecord } from '../types';
 
 export default function CountdownBidding() {
-  // Start countdown from exactly 21d, 7h, 45m, 9s relative to loading
-  const [timeLeft, setTimeLeft] = useState({
-    days: 21,
-    hours: 7,
-    minutes: 45,
-    seconds: 9,
-  });
+  // Target: 5:00 PM IST on Friday, 5th June 2026
+  // IST = UTC+5:30 → 5 PM IST = 11:30 AM UTC
+  const TARGET_DATE = new Date('2026-06-05T11:30:00Z');
+
+  const calcTimeLeft = () => {
+    const diff = TARGET_DATE.getTime() - Date.now();
+    if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+    const totalSeconds = Math.floor(diff / 1000);
+    return {
+      days: Math.floor(totalSeconds / 86400),
+      hours: Math.floor((totalSeconds % 86400) / 3600),
+      minutes: Math.floor((totalSeconds % 3600) / 60),
+      seconds: totalSeconds % 60,
+    };
+  };
+
+  const [timeLeft, setTimeLeft] = useState(calcTimeLeft);
 
   // Client form states
   const [formData, setFormData] = useState({
@@ -48,24 +58,11 @@ export default function CountdownBidding() {
     }
   }, []);
 
-  // Ticking countdown timer
+  // Ticking countdown timer — recalculates against the real target every second
   useEffect(() => {
     const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev.seconds > 0) {
-          return { ...prev, seconds: prev.seconds - 1 };
-        } else if (prev.minutes > 0) {
-          return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        } else if (prev.hours > 0) {
-          return { ...prev, hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        } else if (prev.days > 0) {
-          return { ...prev, days: prev.days - 1, hours: 23, minutes: 59, seconds: 59 };
-        }
-        clearInterval(timer);
-        return prev;
-      });
+      setTimeLeft(calcTimeLeft());
     }, 1000);
-
     return () => clearInterval(timer);
   }, []);
 
