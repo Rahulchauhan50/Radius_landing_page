@@ -10,19 +10,26 @@ import { CheckCircle } from 'lucide-react';
 
 export default function Ambassadors() {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  const [handle, setHandle] = useState('');
-  const [niche, setNiche] = useState('tech');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
   const [submitted, setSubmitted] = useState(false);
+
+  const closeModal = () => {
+    setSelectedCategory(null);
+    setName('');
+    setEmail('');
+    setPhone('');
+  };
 
   const handleRegister = (e: FormEvent) => {
     e.preventDefault();
-    if (!handle) return;
+    if (!name || !email || !phone) return;
     setSubmitted(true);
     setTimeout(() => {
       setSubmitted(false);
-      setSelectedCategory(null);
-      setHandle('');
-    }, 4000);
+      closeModal();
+    }, 3500);
   };
 
   // Local categories definition matching the design mockup precisely
@@ -114,83 +121,95 @@ export default function Ambassadors() {
           ))}
         </div>
 
-        {/* Modal Overlay for social submission application */}
+        {/* Registration Popup */}
         {selectedCategory && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-xs p-4">
-            <div className="relative w-full max-w-sm bg-white rounded-2xl border border-zinc-200 p-6 shadow-2xl animate-in zoom-in-95 duration-150">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+            onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
+          >
+            <div className="relative w-full max-w-sm bg-white rounded-2xl border border-zinc-200/80 p-7 shadow-2xl">
+              {/* Close */}
               <button
-                onClick={() => {
-                  setSelectedCategory(null);
-                  setHandle('');
-                }}
-                className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-655 text-sm font-bold w-6 h-6 flex items-center justify-center rounded-full bg-zinc-100 hover:bg-zinc-200"
+                onClick={closeModal}
+                className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-400 hover:text-zinc-700 transition-colors cursor-pointer"
+                aria-label="Close"
               >
                 ✕
               </button>
 
-              <div className="text-center mb-6">
-                <span className="px-2 py-0.5 bg-zinc-100 text-[10px] font-sans leading-none tracking-widest font-extrabold text-zinc-500 rounded uppercase">
-                  ambassador onboarding
+              {/* Header */}
+              <div className="mb-6">
+                <span className="inline-block px-2 py-0.5 bg-zinc-100 text-[10px] font-sans font-extrabold text-zinc-500 rounded tracking-widest uppercase">
+                  {selectedCategory === 'creators' ? 'Creators' : 'Campus Stars'}
                 </span>
-                <h3 className="font-sans font-bold text-lg text-zinc-900 mt-2">
-                  Register for {selectedCategory === 'creators' ? 'Creators' : 'Campus Stars'}
+                <h3 className="font-sans font-bold text-[20px] text-[#1d1d1f] mt-2 leading-tight">
+                  Register Now
                 </h3>
+                <p className="text-[12px] text-zinc-400 font-sans mt-0.5">Fill in your details and we'll get in touch.</p>
               </div>
 
               {submitted ? (
                 <div className="py-8 flex flex-col items-center justify-center text-center">
-                  <div className="w-12 h-12 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center mb-3">
-                    <CheckCircle className="w-6 h-6 animate-pulse" />
+                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mb-4">
+                    <CheckCircle className="w-7 h-7" />
                   </div>
-                  <h4 className="font-sans font-bold text-sm text-zinc-950">Application Logged</h4>
-                  <p className="text-[11px] text-zinc-500 mt-1 max-w-[240px]">
-                    Our social audit team will review your timeline and reach out on campus!
+                  <h4 className="font-sans font-bold text-base text-zinc-900">You're registered!</h4>
+                  <p className="text-[12px] text-zinc-500 mt-1.5 max-w-[220px] leading-relaxed">
+                    Our team will review your details and reach out soon.
                   </p>
                 </div>
               ) : (
                 <form onSubmit={handleRegister} className="space-y-4">
+                  {/* Name */}
                   <div>
-                    <label className="block text-[10px] font-sans font-bold text-zinc-500 uppercase mb-1">
-                      Social Username / Channel Link
+                    <label className="block text-[11px] font-sans font-semibold text-zinc-500 mb-1.5">
+                      Name
                     </label>
-                    <div className="relative">
-                      <span className="absolute left-3 top-2.5 text-zinc-400 text-xs font-sans">@</span>
-                      <input
-                        required
-                        type="text"
-                        placeholder="e.g. rahul_creates"
-                        value={handle}
-                        onChange={(e) => setHandle(e.target.value)}
-                        className="w-full bg-zinc-50 border border-zinc-200 rounded-lg pl-7 pr-3 py-2 text-xs text-zinc-900 focus:outline-hidden focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f] transition-all font-sans"
-                      />
-                    </div>
+                    <input
+                      required
+                      type="text"
+                      placeholder="Your full name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans"
+                    />
                   </div>
 
+                  {/* Email */}
                   <div>
-                    <label className="block text-[10px] font-sans font-bold text-zinc-500 uppercase mb-1">
-                      Content Focus Niche
+                    <label className="block text-[11px] font-sans font-semibold text-zinc-500 mb-1.5">
+                      Email
                     </label>
-                    <select
-                      value={niche}
-                      onChange={(e) => setNiche(e.target.value)}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-hidden focus:border-[#1d1d1f] transition-all font-sans"
-                    >
-                      <option value="tech">Tech Reviews & Hardware Sprints</option>
-                      <option value="lifestyle">Vlog, Campus Routine & Aesthetic</option>
-                      <option value="coding">Software Engineering, Coding & Design</option>
-                      <option value="academics">Study Hacks, Notion Templates & Prep</option>
-                    </select>
+                    <input
+                      required
+                      type="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans"
+                    />
                   </div>
 
-                  <p className="text-[10px] text-zinc-400 font-light leading-normal font-sans">
-                    By submitting, you agree to grant Radius teams non-exclusive storage and marketing repost rights for audit reels on campus.
-                  </p>
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-[11px] font-sans font-semibold text-zinc-500 mb-1.5">
+                      Phone
+                    </label>
+                    <input
+                      required
+                      type="tel"
+                      placeholder="+91 XXXXX XXXXX"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans"
+                    />
+                  </div>
 
                   <button
                     type="submit"
-                    className="w-full py-2.5 bg-[#1d1d1f] hover:bg-black text-white font-sans font-bold uppercase text-xs tracking-wider rounded-lg transition-colors cursor-pointer"
+                    className="w-full mt-2 py-3 bg-[#1d1d1f] hover:bg-black text-white font-sans font-semibold text-sm rounded-xl transition-colors cursor-pointer"
                   >
-                    Lock My Profile
+                    Submit
                   </button>
                 </form>
               )}

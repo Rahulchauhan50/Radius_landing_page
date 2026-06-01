@@ -6,6 +6,10 @@
  */
 
 import { useState } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
+import tab3 from '../assets/tabs/tab1.png';
+import tab2 from '../assets/tabs/tab2.png';
+import tab1 from '../assets/tabs/tab3.png';
 
 // Custom icons for Instagram posts
 function CarouselIcon() {
@@ -48,18 +52,21 @@ export default function SocialLaunchBuzz() {
   const slots = [
     {
       time: '3:00 PM',
-      title: 'Orientation & Student Welcome',
-      details: 'Step into the dedicated lab for dynamic, hands-on masterclasses showcasing creative Apple suites.'
+      title: 'Reel contest winner',
+      details: 'Radius Ambassadors',
+      imageUrl: tab1.src
     },
     {
       time: '5:00 PM',
-      title: 'Live Auction',
-      details: 'Winner takes device at bid price'
+      title: 'Celebrity Kick off',
+      details: 'Guest performance / Entertainment',
+      imageUrl: tab2.src
     },
     {
       time: '8:00 PM',
-      title: 'Grand Concert & Elite Winners',
-      details: 'Recognizing our top referral influencers and announcing lucky draw winners live on our main staging deck.'
+      title: 'Live Auction',
+      details: 'winner takes device at bid price',
+      imageUrl: tab3.src
     }
   ];
 
@@ -98,6 +105,14 @@ export default function SocialLaunchBuzz() {
   ];
 
   const activeSlot = slots[selectedSlotIndex];
+
+  const handlePrev = () => {
+    setSelectedSlotIndex((prev) => (prev === 0 ? slots.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setSelectedSlotIndex((prev) => (prev + 1) % slots.length);
+  };
 
   return (
     <section className="w-full bg-white py-16 md:py-20">
@@ -154,55 +169,94 @@ export default function SocialLaunchBuzz() {
               </p>
             </div>
 
-            {/* Spotlight Card */}
-            <div className="bg-[#f5f5f7] rounded-[24px] overflow-hidden border border-[#d2d2d7]/35 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between">
-              {/* Event Image */}
-              <div className="h-60 relative w-full overflow-hidden">
-                <img
-                  src="https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?auto=format&fit=crop&q=80&w=700"
-                  alt="Student bidding crowd"
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
-              </div>
+            {/* Spotlight Card Carousel */}
+            <div className="relative group/card">
+              <div className="bg-[#f5f5f7] rounded-[24px] overflow-hidden border border-[#d2d2d7]/35 shadow-[0_4px_20px_rgba(0,0,0,0.02)] flex flex-col justify-between">
+                {/* Event Image with animated crossfade */}
+                <div className="h-60 relative w-full overflow-hidden">
+                  {slots.map((slot, idx) => (
+                    <img
+                      key={idx}
+                      src={slot.imageUrl}
+                      alt={slot.title}
+                      className={`absolute inset-0 w-full h-full object-cover object-top transition-opacity duration-500 ${
+                        idx === selectedSlotIndex ? 'opacity-100' : 'opacity-0'
+                      }`}
+                      referrerPolicy="no-referrer"
+                    />
+                  ))}
 
-              {/* Spotlight Description */}
-              <div className="p-8 flex flex-col justify-between flex-1 min-h-[220px]">
-                <div className="space-y-2">
-                  <h4 className="font-sans font-bold text-[22px] text-[#1d1d1f] leading-snug">
-                    {activeSlot.title}
-                  </h4>
-                  <p className="text-[13px] text-[#515154] font-medium leading-relaxed">
-                    {activeSlot.details}
-                  </p>
+                  {/* Prev/Next arrows */}
+                  <button
+                    onClick={handlePrev}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/30 backdrop-blur-xs text-white opacity-0 group-hover/card:opacity-100 hover:bg-black/50 transition-all z-10 cursor-pointer"
+                    aria-label="Previous slide"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={handleNext}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-full bg-black/30 backdrop-blur-xs text-white opacity-0 group-hover/card:opacity-100 hover:bg-black/50 transition-all z-10 cursor-pointer"
+                    aria-label="Next slide"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+
+                  {/* Slide dots */}
+                  <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-10">
+                    {slots.map((_, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setSelectedSlotIndex(idx)}
+                        className={`transition-all duration-300 rounded-full cursor-pointer ${
+                          idx === selectedSlotIndex
+                            ? 'w-4 h-1.5 bg-white'
+                            : 'w-1.5 h-1.5 bg-white/50 hover:bg-white/75'
+                        }`}
+                        aria-label={`Go to slide ${idx + 1}`}
+                      />
+                    ))}
+                  </div>
                 </div>
 
-                {/* Interactive Horizontal Timeline Slider */}
-                <div className="mt-8 pt-6 border-t border-[#d2d2d7]/50">
-                  <div className="relative h-[4px] bg-[#1d1d1f] rounded-full mx-6">
-                    <div
-                      className="absolute h-full bg-[#d22630] rounded-full transition-all duration-300"
-                      style={{
-                        width: selectedSlotIndex === 0 ? '15%' : selectedSlotIndex === 1 ? '50%' : '100%'
-                      }}
-                    />
+                {/* Spotlight Description */}
+                <div className="p-8 flex flex-col justify-between flex-1 min-h-[220px]">
+                  <div className="space-y-2">
+                    <h4 className="font-sans font-bold text-[22px] text-[#1d1d1f] leading-snug">
+                      {activeSlot.title}
+                    </h4>
+                    <p className="text-[13px] text-[#515154] font-medium leading-relaxed">
+                      {activeSlot.details}
+                    </p>
                   </div>
 
-                  <div className="flex justify-between px-6 mt-3 text-[12px] font-sans font-bold">
-                    {slots.map((slot, idx) => {
-                      const isActive = selectedSlotIndex === idx;
-                      return (
-                        <button
-                          key={slot.time}
-                          onClick={() => setSelectedSlotIndex(idx)}
-                          className={`cursor-pointer transition-colors duration-200 ${
-                            isActive ? 'text-[#d22630]' : 'text-[#86868b]'
-                          }`}
-                        >
-                          {slot.time}
-                        </button>
-                      );
-                    })}
+                  {/* Interactive Horizontal Timeline Slider */}
+                  <div className="mt-8 pt-6 border-t border-[#d2d2d7]/50">
+                    <div className="relative h-[4px] bg-[#1d1d1f] rounded-full mx-6">
+                      <div
+                        className="absolute h-full bg-[#d22630] rounded-full transition-all duration-300"
+                        style={{
+                          width: selectedSlotIndex === 0 ? '15%' : selectedSlotIndex === 1 ? '50%' : '100%'
+                        }}
+                      />
+                    </div>
+
+                    <div className="flex justify-between px-6 mt-3 text-[12px] font-sans font-bold">
+                      {slots.map((slot, idx) => {
+                        const isActive = selectedSlotIndex === idx;
+                        return (
+                          <button
+                            key={slot.time}
+                            onClick={() => setSelectedSlotIndex(idx)}
+                            className={`cursor-pointer transition-colors duration-200 ${
+                              isActive ? 'text-[#d22630]' : 'text-[#86868b]'
+                            }`}
+                          >
+                            {slot.time}
+                          </button>
+                        );
+                      })}
+                    </div>
                   </div>
                 </div>
               </div>

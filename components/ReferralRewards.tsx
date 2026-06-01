@@ -6,7 +6,6 @@
  */
 
 import { useState, FormEvent } from 'react';
-import { Copy, Check, Gift, Share2 } from 'lucide-react';
 import { REFERRAL_TIERS } from '../data';
 
 // Import local SVG assets
@@ -83,12 +82,28 @@ function ReferralTierIcons({ tierId }: { tierId: number }) {
 export default function ReferralRewards() {
   const [selectedTier, setSelectedTier] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [studentName, setStudentName] = useState('');
-  const [rollNumber, setRollNumber] = useState('');
-  const [generatedLink, setGeneratedLink] = useState('');
-  const [copied, setCopied] = useState(false);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+  const [submitted, setSubmitted] = useState(false);
 
-  // Workflow steps with custom outline SVGs and text
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setName('');
+    setEmail('');
+    setPhone('');
+    setSubmitted(false);
+  };
+
+  const handleSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    if (!name || !email || !phone) return;
+    setSubmitted(true);
+    setTimeout(() => {
+      closeModal();
+    }, 3500);
+  };
+
   const steps = [
     {
       index: '1',
@@ -121,21 +136,6 @@ export default function ReferralRewards() {
       icon: LeaderboardIcon
     }
   ];
-
-  const handleGenerateLink = (e: FormEvent) => {
-    e.preventDefault();
-    if (!studentName || !rollNumber) return;
-
-    const pseudoCode = `RAD-${studentName.substring(0, 3).toUpperCase()}-${rollNumber.slice(-4)}`;
-    const mockUrl = `https://radius-elevate.com/invite/${pseudoCode}`;
-    setGeneratedLink(mockUrl);
-  };
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(generatedLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
 
   return (
     <section id="gamified-incentives" className="w-full bg-white py-16 md:py-20">
@@ -205,93 +205,96 @@ export default function ReferralRewards() {
           </button>
         </div>
 
-        {/* Modal Generator Drawer */}
+        {/* Refer Popup */}
         {isModalOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4">
-            <div className="relative w-full max-w-md bg-white rounded-2xl border border-zinc-200 p-6 sm:p-8 shadow-2xl animate-in fade-in zoom-in-95 duration-150">
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-4"
+            onClick={(e) => { if (e.target === e.currentTarget) closeModal(); }}
+          >
+            <div className="relative w-full max-w-sm bg-white rounded-2xl border border-zinc-200/80 p-7 shadow-2xl">
+              {/* Close */}
               <button
-                onClick={() => {
-                  setIsModalOpen(false);
-                  setGeneratedLink('');
-                  setStudentName('');
-                  setRollNumber('');
-                }}
-                className="absolute top-4 right-4 text-zinc-400 hover:text-zinc-600 text-sm font-bold w-6 h-6 flex items-center justify-center rounded-full bg-zinc-100 hover:bg-zinc-200"
+                onClick={closeModal}
+                className="absolute top-4 right-4 w-7 h-7 flex items-center justify-center rounded-full bg-zinc-100 hover:bg-zinc-200 text-zinc-400 hover:text-zinc-700 transition-colors cursor-pointer"
+                aria-label="Close"
               >
                 ✕
               </button>
 
-              <div className="flex items-center gap-2 mb-4">
-                <div className="p-2 bg-purple-50 text-purple-600 rounded-lg">
-                  <Gift className="w-5 h-5 animate-pulse" />
-                </div>
-                <div>
-                  <h3 className="font-sans font-bold text-lg text-zinc-900">Campus Invitation Portal</h3>
-                  <p className="text-[10px] font-sans font-medium text-zinc-400">Generate Your Trackable Invite Link</p>
-                </div>
+              {/* Header */}
+              <div className="mb-6">
+                <h3 className="font-sans font-bold text-[20px] text-[#1d1d1f] leading-tight">
+                  Refer a Friend
+                </h3>
+                <p className="text-[12px] text-zinc-400 font-sans mt-0.5">Fill in your details and we'll get in touch.</p>
               </div>
 
-              {!generatedLink ? (
-                <form onSubmit={handleGenerateLink} className="space-y-4">
+              {submitted ? (
+                <div className="py-8 flex flex-col items-center justify-center text-center">
+                  <div className="w-14 h-14 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center mb-4">
+                    <svg className="w-7 h-7" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  </div>
+                  <h4 className="font-sans font-bold text-base text-zinc-900">Thanks for referring!</h4>
+                  <p className="text-[12px] text-zinc-500 mt-1.5 max-w-[220px] leading-relaxed">
+                    Our team will review your details and reach out soon.
+                  </p>
+                </div>
+              ) : (
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Name */}
                   <div>
-                    <label className="block text-[10px] font-sans font-bold text-zinc-500 uppercase mb-1">Your Full Name</label>
+                    <label className="block text-[11px] font-sans font-semibold text-zinc-500 mb-1.5">
+                      Name
+                    </label>
                     <input
                       required
                       type="text"
-                      placeholder="e.g. Rahul Chauhan"
-                      value={studentName}
-                      onChange={(e) => setStudentName(e.target.value)}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-hidden focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f] transition-all font-sans"
+                      placeholder="Your full name"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans"
                     />
                   </div>
+
+                  {/* Email */}
                   <div>
-                    <label className="block text-[10px] font-sans font-bold text-zinc-500 uppercase mb-1">Chitkara Roll Number</label>
+                    <label className="block text-[11px] font-sans font-semibold text-zinc-500 mb-1.5">
+                      Email
+                    </label>
                     <input
                       required
-                      type="text"
-                      placeholder="e.g. 2110991234"
-                      value={rollNumber}
-                      onChange={(e) => setRollNumber(e.target.value)}
-                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3 py-2 text-xs text-zinc-900 focus:outline-hidden focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f] transition-all font-mono"
+                      type="email"
+                      placeholder="you@example.com"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans"
+                    />
+                  </div>
+
+                  {/* Phone */}
+                  <div>
+                    <label className="block text-[11px] font-sans font-semibold text-zinc-500 mb-1.5">
+                      Phone
+                    </label>
+                    <input
+                      required
+                      type="tel"
+                      placeholder="+91 XXXXX XXXXX"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans"
                     />
                   </div>
 
                   <button
                     type="submit"
-                    className="w-full bg-[#1d1d1f] hover:bg-black text-white font-sans font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg transition-colors cursor-pointer"
+                    className="w-full mt-2 py-3 bg-[#1d1d1f] hover:bg-black text-white font-sans font-semibold text-sm rounded-xl transition-colors cursor-pointer"
                   >
-                    Generate Invite Link
+                    Submit
                   </button>
                 </form>
-              ) : (
-                <div className="space-y-4">
-                  <div className="p-3 bg-zinc-50 rounded-lg border border-zinc-200">
-                    <span className="text-[9px] font-sans font-bold text-zinc-400 uppercase tracking-widest block mb-1">Your Custom Referral Invite Url</span>
-                    <div className="flex items-center justify-between gap-2">
-                      <span className="text-xs font-mono text-zinc-700 truncate select-all">{generatedLink}</span>
-                      <button
-                        onClick={copyToClipboard}
-                        className="p-1.5 rounded bg-white hover:bg-zinc-100 text-zinc-600 border border-zinc-200 cursor-pointer"
-                        title="Copy link"
-                      >
-                        {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-                      </button>
-                    </div>
-                  </div>
-
-                  <p className="text-[11px] text-zinc-500 leading-normal font-light">
-                    Share this link via WhatsApp or Instagram stories. For every peer who registers a MacBook query through this, you gain 1 credit point!
-                  </p>
-
-                  <a
-                    href={`https://api.whatsapp.com/send?text=Hey!%20Get%20exclusive%20Chitkara%20Apple%2520Student%2520Discounts%2520at%2520the%20Radius%20Experience%20Center.%20Use%2520my%2520invite%20to%20register%2520interest%21%20${encodeURIComponent(generatedLink)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full bg-[#25D366] hover:bg-emerald-600 text-white font-sans font-bold text-xs uppercase tracking-wider py-2.5 rounded-lg transition-colors text-center cursor-pointer flex items-center justify-center gap-1"
-                  >
-                    <Share2 className="w-3.5 h-3.5" /> Share directly on WhatsApp
-                  </a>
-                </div>
               )}
             </div>
           </div>
