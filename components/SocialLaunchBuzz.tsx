@@ -7,9 +7,9 @@
 
 import { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
-import tab3 from '../assets/tabs/tab1.png';
-import tab2 from '../assets/tabs/tab2.png';
-import tab1 from '../assets/tabs/tab3.png';
+import tab3 from '../assets/tabs/Tab1.png';
+import tab2 from '../assets/tabs/Tab2.png';
+import tab1 from '../assets/tabs/Tab3.png';
 
 // Custom icons for Instagram posts
 function CarouselIcon() {
