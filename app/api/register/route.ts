@@ -6,7 +6,7 @@ export const dynamic = 'force-dynamic';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, phone, formType } = body;
+    const { name, email, phone, formType, instagram } = body;
 
     // Basic validation
     if (!name || !email || !phone) {
@@ -109,6 +109,12 @@ export async function POST(request: Request) {
                     <td style="padding: 7px 0; font-size: 14px; color: #6b7280; font-weight: 500;">Phone:</td>
                     <td style="padding: 7px 0; font-size: 14px; color: #111827; font-weight: 600;">${phone}</td>
                   </tr>
+                  ${instagram ? `
+                  <tr>
+                    <td style="padding: 7px 0; font-size: 14px; color: #6b7280; font-weight: 500;">Instagram Handle:</td>
+                    <td style="padding: 7px 0; font-size: 14px; color: #111827; font-weight: 600;">${instagram}</td>
+                  </tr>
+                  ` : ''}
                   <tr>
                     <td style="padding: 7px 0; font-size: 14px; color: #6b7280; font-weight: 500;">Form Type:</td>
                     <td style="padding: 7px 0; font-size: 14px; color: #111827; font-weight: 600;">${formLabel}</td>
@@ -168,6 +174,12 @@ export async function POST(request: Request) {
                     <td style="padding: 7px 0; font-size: 14px; color: #4b5563; font-weight: 500;">Phone:</td>
                     <td style="padding: 7px 0; font-size: 14px; color: #111827; font-weight: 600;">${phone}</td>
                   </tr>
+                  ${instagram ? `
+                  <tr>
+                    <td style="padding: 7px 0; font-size: 14px; color: #4b5563; font-weight: 500;">Instagram Handle:</td>
+                    <td style="padding: 7px 0; font-size: 14px; color: #111827; font-weight: 600;">${instagram}</td>
+                  </tr>
+                  ` : ''}
                 </table>
               </div>
 

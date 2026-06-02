@@ -13,6 +13,7 @@ export default function Ambassadors() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [phone, setPhone] = useState('');
+  const [instagram, setInstagram] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -22,6 +23,7 @@ export default function Ambassadors() {
     setName('');
     setEmail('');
     setPhone('');
+    setInstagram('');
     setSubmitted(false);
     setIsSubmitting(false);
     setErrorMsg('');
@@ -29,14 +31,20 @@ export default function Ambassadors() {
 
   const handleRegister = async (e: FormEvent) => {
     e.preventDefault();
-    if (!name || !email || !phone) return;
+    if (!name || !email || !phone || !instagram) return;
     setIsSubmitting(true);
     setErrorMsg('');
     try {
       const res = await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), phone: phone.trim(), formType: 'ambassador' }),
+        body: JSON.stringify({
+          name: name.trim(),
+          email: email.trim(),
+          phone: phone.trim(),
+          instagram: instagram.trim(),
+          formType: 'ambassador',
+        }),
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.error || 'Submission failed.');
@@ -221,6 +229,22 @@ export default function Ambassadors() {
                       value={phone}
                       disabled={isSubmitting}
                       onChange={(e) => setPhone(e.target.value)}
+                      className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans disabled:opacity-60"
+                    />
+                  </div>
+
+                  {/* Instagram Handle */}
+                  <div>
+                    <label className="block text-[11px] font-sans font-semibold text-zinc-500 mb-1.5">
+                      Instagram Handle
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      placeholder="@username"
+                      value={instagram}
+                      disabled={isSubmitting}
+                      onChange={(e) => setInstagram(e.target.value)}
                       className="w-full bg-zinc-50 border border-zinc-200 rounded-lg px-3.5 py-2.5 text-sm text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-[#1d1d1f] focus:ring-1 focus:ring-[#1d1d1f]/20 transition-all font-sans disabled:opacity-60"
                     />
                   </div>

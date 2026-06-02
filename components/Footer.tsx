@@ -18,7 +18,7 @@ export default function Footer() {
 
           {/* Right: Site Policies Links */}
           <div className="flex items-center space-x-1.5 text-[11px] font-mono tracking-wider">
-            <a href="#privacy" className="hover:text-zinc-350 transition-colors hover:underline">Privacy Policy</a>
+            <a href="https://www.radiussystems.net/privacy-policy-2/" target="_blank" rel="noopener noreferrer" className="hover:text-zinc-350 transition-colors hover:underline">Privacy Policy</a>
             <span>|</span>
             <a href="#terms" className="hover:text-zinc-355 transition-colors hover:underline">Terms &amp; Conditions</a>
             <span>|</span>

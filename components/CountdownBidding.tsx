@@ -25,7 +25,8 @@ export default function CountdownBidding() {
     };
   };
 
-  const [timeLeft, setTimeLeft] = useState(calcTimeLeft);
+  // Initialize with zeros to prevent hydration mismatch
+  const [timeLeft, setTimeLeft] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
   // Client form states
   const [formData, setFormData] = useState({
@@ -60,6 +61,9 @@ export default function CountdownBidding() {
 
   // Ticking countdown timer — recalculates against the real target every second
   useEffect(() => {
+    // Set the correct time immediately on first mount (fixes hydration mismatch)
+    setTimeLeft(calcTimeLeft());
+
     const timer = setInterval(() => {
       setTimeLeft(calcTimeLeft());
     }, 1000);
