@@ -178,21 +178,21 @@ export const GALLERY_SLIDES: GallerySlide[] = [
   },
   {
     id: 2,
-    title: 'Apple Demonstration Zone',
-    subtitle: 'Interact directly with the newest line of hardware, custom configured for academic and creative tasks.',
-    imageUrl: 'https://images.unsplash.com/photo-1531297484001-80022131f5a1?auto=format&fit=crop&q=80&w=1200'
+    title: '',
+    subtitle: '',
+    imageUrl: slide1.src,
   },
   {
     id: 3,
-    title: 'The iOS Innovation Lab',
-    subtitle: 'Free interactive sessions, swift workshops, and specialized training led directly on premium iMac workstations.',
-    imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&q=80&w=1200'
+     title: '',
+    subtitle: '',
+    imageUrl: slide1.src,
   },
   {
     id: 4,
-    title: 'Chitkara Launch Fiesta',
-    subtitle: 'Thousands of passionate peers assembled at the store block to experience the premier retail revolution.',
-    imageUrl: 'https://images.unsplash.com/photo-1515187029135-18ee286d815b?auto=format&fit=crop&q=80&w=1200'
+    title: '',
+    subtitle: '',
+    imageUrl: slide1.src,
   }
 ];
 
