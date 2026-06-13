@@ -5,7 +5,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import tab3 from '../assets/tabs/Tab1.png';
 import tab2 from '../assets/tabs/Tab2.png';
@@ -45,8 +45,37 @@ function PlayIcon() {
   );
 }
 
+interface InstaPost {
+  id: string;
+  imageUrl: string;
+  type: 'carousel' | 'video' | 'single';
+  permalink: string;
+  caption: string;
+}
+
 export default function SocialLaunchBuzz() {
   const [selectedSlotIndex, setSelectedSlotIndex] = useState(1); // Default to index 1 (5:00 PM / Live Auction)
+  const [posts, setPosts] = useState<InstaPost[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch Instagram posts on mount
+  useEffect(() => {
+    async function fetchPosts() {
+      try {
+        const res = await fetch('/api/instagram');
+        if (!res.ok) throw new Error('Failed to fetch');
+        const data = await res.json();
+        if (data.posts && data.posts.length > 0) {
+          setPosts(data.posts.slice(0, 6));
+        }
+      } catch (err) {
+        console.error('Failed to load Instagram posts:', err);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    fetchPosts();
+  }, []);
 
   // Local slots definition matching the mockup events and text
   const slots = [
@@ -67,40 +96,6 @@ export default function SocialLaunchBuzz() {
       title: 'Live Auction',
       details: 'winner takes device at bid price',
       imageUrl: tab3.src
-    }
-  ];
-
-  // Local Instagram posts matching the mockup visuals
-  const posts = [
-    {
-      id: 'post_1',
-      imageUrl: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&q=80&w=400',
-      type: 'carousel'
-    },
-    {
-      id: 'post_2',
-      imageUrl: 'https://images.unsplash.com/photo-1498050108023-c5249f4df085?auto=format&fit=crop&q=80&w=400',
-      type: 'single'
-    },
-    {
-      id: 'post_3',
-      imageUrl: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&q=80&w=400',
-      type: 'carousel'
-    },
-    {
-      id: 'post_4',
-      imageUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=400',
-      type: 'carousel'
-    },
-    {
-      id: 'post_5',
-      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&q=80&w=400',
-      type: 'video'
-    },
-    {
-      id: 'post_6',
-      imageUrl: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&q=80&w=400',
-      type: 'single'
     }
   ];
 
@@ -133,27 +128,47 @@ export default function SocialLaunchBuzz() {
               </p>
             </div>
 
-            {/* 3x2 Instagram Grid (3:4 aspect ratio) */}
+            {/* 3x2 Instagram Grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-3.5">
-              {posts.map((post) => (
-                <div
-                  key={post.id}
-                  className="group relative aspect-[1/1] bg-[#f5f5f7] rounded-[16px] overflow-hidden cursor-pointer"
-                >
-                  <img
-                    src={post.imageUrl}
-                    alt="Instagram Post"
-                    className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
-                    referrerPolicy="no-referrer"
-                  />
-                  {/* Subtle Insta icon corner */}
-                  {post.type !== 'single' && (
-                    <div className="absolute top-2.5 right-2.5 p-1 rounded bg-black/40 backdrop-blur-xs text-white opacity-95">
-                      {post.type === 'carousel' ? <CarouselIcon /> : <PlayIcon />}
-                    </div>
-                  )}
+              {isLoading ? (
+                // Loading skeletons
+                Array.from({ length: 6 }).map((_, i) => (
+                  <div
+                    key={`skeleton-${i}`}
+                    className="aspect-[1/1] bg-[#f5f5f7] rounded-[16px] overflow-hidden animate-pulse"
+                  >
+                    <div className="w-full h-full bg-gradient-to-br from-[#e8e8ed] to-[#f5f5f7]" />
+                  </div>
+                ))
+              ) : posts.length > 0 ? (
+                posts.map((post) => (
+                  <a
+                    key={post.id}
+                    href={post.permalink}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="group relative aspect-[1/1] bg-[#f5f5f7] rounded-[16px] overflow-hidden cursor-pointer block"
+                  >
+                    <img
+                      src={post.imageUrl}
+                      alt={post.caption ? post.caption.slice(0, 80) : 'Instagram Post'}
+                      className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500"
+                      referrerPolicy="no-referrer"
+                    />
+                    {/* Subtle Insta icon corner */}
+                    {post.type !== 'single' && (
+                      <div className="absolute top-2.5 right-2.5 p-1 rounded bg-black/40 backdrop-blur-xs text-white opacity-95">
+                        {post.type === 'carousel' ? <CarouselIcon /> : <PlayIcon />}
+                      </div>
+                    )}
+                  </a>
+                ))
+              ) : (
+                // Empty state
+                <div className="col-span-2 sm:col-span-3 py-12 text-center">
+                  <p className="text-[#86868b] text-sm font-sans">No posts available right now.</p>
                 </div>
-              ))}
+              )}
             </div>
           </div>
 
